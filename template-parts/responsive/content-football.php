@@ -34,55 +34,58 @@
 		<?php echo "</div>"; ?>
 	</header><!-- .entry-header -->	 
 
-	<div id="item-wrapper" class="large-12 medium-12 columns" >
-		<?php
-			$categories = array('post_type' => 'football_uniform','orderby' => 'name','order' => 'ASC');
-			$categories = get_categories($categories); 
-		?>
-			<div id="filter-menu">
-				<ul id="category-menu">
-						<li id="btn-all">
-					   		 <a href="#">All</a>
-					    </li>
-				    <?php foreach ( $categories as $cat ) : ?>
-					    <li id="cat-<?php echo $cat->term_id ?>" class="class-btn">
-					   		 <a class="<?php echo $cat->slug; ?> ajax" data-cat-id="<?php echo $cat->term_id; ?> " href="#"><?php echo $cat->name; ?></a>
-					    </li>
-				    <?php endforeach; ?>
-				</ul>
-			</div>
+<div id="filter-menu">
+	<ul id="category-menu" class="filter-tags">
+			<li><a class="active" href="#" data-group="all">All</a></li>
+		<?php foreach ( $categories as $cat):?>
+			<li><a href="#" data-group="<?php echo $cat->category_nicename ?>"><?php echo $cat->cat_name ?></a></li>
+		<?php endforeach; ?>
+	</ul>
+</div>
 
+<div class="large-12 columns clearfix">
+	<div id="grid" class="container-sports small-up-1 medium-up-2 large-up-3">
+		<?php 
+ 		   $football_item = new WP_Query( array( 
+ 		   		'post_type' 		=> 'football_uniform',
+ 		   		'posts_per_page' 	=> -1, 
+ 		   		'order' 			=> 'ASC',
+ 		   		'tax_query' 		=> array(
+		 		   					array (
+						 		   			'taxonomy' => 'gender_uniform',
+										    'field' => 'slug',
+										    'terms' => 'women'
+			 		   						),
+			   						),
+ 		   		));	
+		 ?>
 
-		<div id="footaball-uniform-all" class="container-sports small-up-1 medium-up-2 large-up-3 wow fadeIn clearfix ">
-			<!-- <?php 
-				 $football_item = new WP_Query( array( 'post_type' => 'football_uniform','posts_per_page' => 100, 'order' => 'ASC'));
-			 ?>
-
-			 <?php if( $football_item->have_posts() ): ?>
-			 	
+		 <?php if( $football_item->have_posts() ): ?>
+				
 				<?php while( $football_item ->have_posts() ) : $football_item ->the_post();?>
+				
+				<?php $thumb_item = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); 
+				 	  $cat = get_the_category(); ?>
 
-					<?php $thumb_item = wp_get_attachment_url( get_post_thumbnail_id($post->ID) ); ?>
+				 	  <?php foreach ( $cat as $cats): ?>
+				 	  	<?php $c = $cats->category_nicename; ?>
+							
+							<div class="column picture-item" data-groups='["all", "<?php echo "$c"; ?>"]'>
+								<div class="uniform-wrapper">
+									<img src="<?php echo $thumb_item ?>" alt="<?php the_title(); ?>">
+										<h2><?php echo get_the_title(); ?></h2>
+										<p><?php echo get_the_content(); ?></p>
+									<?php printf("<a href='http://alpha.qstrike.com/builder/0/%s'>GO BUILD</a>",$item_id); ?>
+								</div>
+					 		</div>	
 
-						<?php get_template_part( 'template-parts/responsive/item', 'football' ); ?>
+				 	  <?php endforeach; ?>	
 
 				<?php endwhile; ?>
 
-			 <?php endif; ?>
- -->
-		</div>
-<!-- 
-		<div id="footaball-uniform-filter" class="container-sports small-up-1 medium-up-2 large-up-3 fadeIn clearfix ">
-
-			<div id="loading-image" style="display: none;">
-				<img src="<?php echo get_bloginfo( 'template_directory' ) ?>/images/loading.gif" alt="loading">
-			</div>
-			<div id="category-post-content">
-				
-
-			</div>	
-		</div>
- -->
+		 <?php endif; ?>
+		 
 	</div>
+</div>
 </div>
 </article><!-- #post-## -->
