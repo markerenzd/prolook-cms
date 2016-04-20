@@ -34,6 +34,15 @@
 		<?php echo "</div>"; ?>
 	</header><!-- .entry-header -->	 
 
+<div id="item-wrapper" class="large-12 medium-12 columns" >
+	<?php
+	 	$categories = array( 
+	 		   		'post_type' 		=> 'football_uniform',
+	 		   		'posts_per_page' 	=> -1, 
+	 		   		'order' 			=> 'ASC',
+	 		   		);	
+		$categories = get_categories($categories);
+	?>
 <div id="filter-menu">
 	<ul id="category-menu" class="filter-tags">
 			<li><a class="active" href="#" data-group="all">All</a></li>
@@ -50,13 +59,6 @@
  		   		'post_type' 		=> 'football_uniform',
  		   		'posts_per_page' 	=> -1, 
  		   		'order' 			=> 'ASC',
- 		   		'tax_query' 		=> array(
-		 		   					array (
-						 		   			'taxonomy' => 'gender_uniform',
-										    'field' => 'slug',
-										    'terms' => 'women'
-			 		   						),
-			   						),
  		   		));	
 		 ?>
 
@@ -87,5 +89,8 @@
 		 
 	</div>
 </div>
-</div>
+
+
+		</div>
+
 </article><!-- #post-## -->
